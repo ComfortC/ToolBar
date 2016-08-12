@@ -1,10 +1,12 @@
 package com.example.khumalo.toolbar;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,6 +19,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(topToolBar);
         topToolBar.setLogo(R.drawable.ic_toobar_icon);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        FloatingActionButton fab =  (FloatingActionButton)findViewById(R.id.find_me_a_ride);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getBaseContext(),"Searching for your ride---",Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 
