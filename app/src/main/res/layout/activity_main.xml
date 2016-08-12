@@ -17,10 +17,11 @@
             android:text="10 mins away"
             android:layout_gravity="center"
             android:textColor="#c2c7ca"
+            android:background="@drawable/rounded_corner"
             android:id="@+id/toolbar_title"
             android:textSize="25dp"
-            android:fontFamily="@string/abc_font_family_button_material"
-            />
+            android:fontFamily="sans-serif-thin"
+            android:padding="4dp" />
 
     </android.support.v7.widget.Toolbar>
 
