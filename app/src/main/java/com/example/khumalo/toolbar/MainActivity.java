@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(),"Searching for your ride---",Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(),"Searching for your ride",Toast.LENGTH_LONG).show();
             }
         });
 
