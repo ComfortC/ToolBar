@@ -16,7 +16,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar topToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
         topToolBar.setLogo(R.drawable.ic_toobar_icon);
-        setTitle(null);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
     }
 
     @Override

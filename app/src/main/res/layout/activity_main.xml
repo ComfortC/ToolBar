@@ -17,9 +17,26 @@
             android:text="10 Minutes"
             android:layout_gravity="center"
             android:textColor="#ECEFF1"
-            android:id="@+id/toolbar_title" />
+            android:id="@+id/toolbar_title"
+            android:textSize="25dp"
+            android:fontFamily="@string/abc_font_family_button_material" />
 
     </android.support.v7.widget.Toolbar>
+
+
+    <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fab_detail_add_item"
+        style="@style/FAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_car"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:layout_margin="20dp" />
 
 
 </RelativeLayout>
