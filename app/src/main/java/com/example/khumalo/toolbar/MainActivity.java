@@ -23,6 +23,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private static final String Tag = "Tag";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final  int PLACE_PICKER_REQUEST = 2;
+    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 3;
     private boolean mPermissionDenied = false;
     TextView diplayTimeToArrive;
     @Override
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             @Override
             public void onClick(View view) {
                 Toast.makeText(getBaseContext(),"Searching for your ride",Toast.LENGTH_LONG).show();
-                buildPlacePicker();
+                buildPlacePickerAutoCompleteDialog();
             }
         });
 
@@ -126,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (PermissionUtils.isPermissionGranted(permissions, grantResults,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
             Log.d(Tag, "The Location Access has been Granted");
-            buildPlacePicker();
+            buildPlacePickerAutoCompleteDialog();
 
         } else {
             // Display the missing permission error dialog when the fragments resume.
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(this, data);
+                Place place = PlaceAutocomplete.getPlace(this, data);
                 String toastMsg = String.format("Your Destination is: %s", place.getName());
                 Toast.makeText(this,toastMsg,Toast.LENGTH_LONG).show();
 
@@ -164,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
- /// Building a Place Picker dialog
-    private void buildPlacePicker() {
+ /// Building a Place Picker dialog with a map
+    private void buildPlacePickerMapDialog() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
@@ -185,6 +187,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         }
 
+    }
+
+    ///Building Place AutoComplete without a Dialog
+    private void buildPlacePickerAutoCompleteDialog(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+
+        }else{
+            Log.d(Tag, "The Location Access has been Granted");
+            try {
+                Intent intent =
+                        new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                                .build(this);
+                startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+            } catch (GooglePlayServicesRepairableException e) {
+                // TODO: Handle the error.
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // TODO: Handle the error.
+            }
+
+        }
     }
 
 }
