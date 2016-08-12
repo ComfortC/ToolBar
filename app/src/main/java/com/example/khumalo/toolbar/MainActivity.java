@@ -156,10 +156,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     //The Rusult returned when the place is picked
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 String toastMsg = String.format("Your Destination is: %s", place.getName());
+                diplayTimeToArrive.setText(place.getName());
                 Toast.makeText(this,toastMsg,Toast.LENGTH_LONG).show();
 
             }
