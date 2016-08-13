@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(),"Searching for your ride",Toast.LENGTH_LONG).show();
+//                Toast.makeText(getBaseContext(),"Searching for your ride",Toast.LENGTH_LONG).show();
                 buildPlacePickerAutoCompleteDialog();
             }
         });
@@ -159,8 +159,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                String toastMsg = String.format("Your Destination is: %s", place.getName());
-                diplayTimeToArrive.setText(place.getName());
+                String toastMsg = String.format("Searching for your ride to "+ place.getName());
+                diplayTimeToArrive.setText("10 mins away" );
                 Toast.makeText(this,toastMsg,Toast.LENGTH_LONG).show();
 
             }

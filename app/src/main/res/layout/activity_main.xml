@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10 mins away"
+            android:text="Welcome"
             android:layout_gravity="center"
             android:textColor="#c2c7ca"
             android:background="@drawable/rounded_corner"
