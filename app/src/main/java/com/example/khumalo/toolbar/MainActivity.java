@@ -9,10 +9,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,10 +23,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 3;
     private boolean mPermissionDenied = false;
     TextView diplayTimeToArrive;
+    ViewGroup cover;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +51,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         diplayTimeToArrive = (TextView)findViewById(R.id.toolbar_title);
         topToolBar.setLogo(R.drawable.ic_toobar_icon);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        cover = (ViewGroup)findViewById(R.id.destination_fragment);
         FloatingActionButton fab =  (FloatingActionButton)findViewById(R.id.find_me_a_ride);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Toast.makeText(getBaseContext(),"Searching for your ride",Toast.LENGTH_LONG).show();
-                buildPlacePickerAutoCompleteDialog();
+               // buildPlacePickerAutoCompleteDialog();
+                cover.setVisibility(View.VISIBLE);
+                PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                        getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+                autocompleteFragment.setHint("Your Destination");
+                autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                    @Override
+                    public void onPlaceSelected(Place place) {
+                        // TODO: Get info about the selected place.
+                        Log.i("Tag", "Place: " + place.getName());
+                        cover.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Status status) {
+                        // TODO: Handle the error.
+                        Log.i("Tag", "An error occurred: " + status);
+                    }
+                });
             }
         });
 
@@ -159,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                String toastMsg = String.format("Searching for your ride to "+ place.getName());
+                String toastMsg = String.format("Searching for your ride to " + place.getName());
                 diplayTimeToArrive.setText("10 mins away" );
                 Toast.makeText(this,toastMsg,Toast.LENGTH_LONG).show();
 
@@ -201,9 +226,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }else{
             Log.d(Tag, "The Location Access has been Granted");
             try {
-                Intent intent =
-                        new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                                .build(this);
+                Intent intent =  new PlaceAutocomplete
+                                .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                                              .build(this);
                 startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
             } catch (GooglePlayServicesRepairableException e) {
                 // TODO: Handle the error.
